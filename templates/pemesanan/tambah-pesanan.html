@@ -1,0 +1,39 @@
+{% extends 'layout/base.html' %}
+{% block content %}
+    <div class="container p-2">
+    {% if messages %}
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    <form action="{% url 'postpemesanan' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h1>Tambah Data Pesanan</h1>
+        <div class="form-group">
+            <p>Id Pemesanan</p>
+            <input class="form-control" type="text" name="idpemesanan" id="idpemesanan" maxlength="4" required>
+        </div>
+        <div class="form-group">
+            <p>Pilih Makanan</p>
+            <select required class="form-control" name="idproduk" id="">
+                <option value="" disabled selected>Pilih makanan</option>
+                {% for dm in datamakanan %}
+                    <option value="{{ dm.idproduk }}"> {{ dm.namaproduct }} </option>
+                {% endfor %}
+              </select>
+        </div>
+        <div class="form-group">
+            <p>Jumlah Pemesanan</p>
+            <input class="form-control" type="number" name="jumlahpemesanan" required>
+        </div>
+        <div class="form-group">
+            <p>Keterangan</p>
+            <input class="form-control" type="text" name="keterangan" maxlength="255" required>
+        </div>
+        <br>
+        <br>
+        <button class="btn btn-success" type="submit">SUBMIT</button>
+        <a class="btn btn-warning " href="{% url 'pemesanan' %}">KEMBALI</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'layout/base.html' %}
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        {% if messages %}
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+        {% endif %}
+        <form action="{% url 'postupdateproduct' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h1>UPDATE DATA PRODUCT</h1>
+            <div class="form-group">
+                <p>Id Produk :</p>
+                <input class="form-control" type="text" name="idproduk" maxlength="4"
+                    value="{{ data_product.idproduk }}" readonly>
+            </div>
+            <div class="form-group">
+                <p>Gambar :</p>
+                <img src="{{ data_product.gambar.url }}" alt="">
+                <input class="form-control" type="file" name="gambar" id="gambar">
+            </div>
+            <div class="form-group">
+                <p>Nama Produk :</p>
+                <input class="form-control" type="text" name="namaproduct" id="namaproduct" maxlength="255"
+                    value="{{ data_product.namaproduct}}" required>
+            </div>
+            <div class="form-group">
+                <p>Harga Produk :</p>
+                <input class="form-control" type="number" name="hargaproduct" id="hargaproduct"
+                    value="{{ data_product.hargaproduct }}" required>
+            </div>
+            <div class="form-group">
+                <p>Deskripsi :</p>
+                <input class="form-control" type="text" name="deskripsi" id="deskripsi" maxlength="255"
+                    value="{{ data_product.deskripsi }}" required>
+            </div>
+            <div class="form-group">
+                <p>Stok :</p>
+                <input class="form-control" type="text" name="stok" id="stok" maxlength="6"
+                    value="{{ data_product.stok}}" required>
+            </div>
+            <br>
+            <br>
+            <button class="btn btn-success" type="submit">SUBMIT</button>
+            <a class="btn btn-warning" href="{% url 'dataproduct' %}">KEMBALI</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

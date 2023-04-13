@@ -1,0 +1,47 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+
+        {% if messages %}
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+        {% endif %}
+        <form action="{% url 'postproduct' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h1>Tambah Data Product</h1>
+            <div class="form-group">
+                <p>Id Product</p>
+                <input class="form-control" type="text" name="idproduk" id="idproduk" maxlength="4" required>
+            </div>
+            <div class="form-group">
+                <p>Gambar</p>
+                <input class="form-control" style="width: fit-content;" type="file" alt="" name="gambar" id="gambar" required>
+            </div>
+            <div class="form-group">
+                <p>Nama Product</p>
+                <input class="form-control" type="text" name="namaproduct" id="namaproduct" maxlength="255" required>
+            </div>
+            <div class="form-group">
+                <p>Harga Product</p>
+                <input class="form-control" type="number" name="hargaproduct" id="hargaproduct" required>
+            </div>
+            <div class="form-group">
+                <p>Deskripsi</p>
+                <input class="form-control" type="text" name="deskripsi" id="deskripsi" maxlength="255" required>
+            </div>
+            <div class="form-group">
+                <p>Stok</p>
+                <input class="form-control" type="text" name="stok" id="stok" maxlength="6" required>
+            </div>
+            <br>
+            <br>
+            <button class="btn btn-success" type="submit">SUBMIT</button>
+            <a class="btn btn-warning " href="{% url 'dataproduct' %}">KEMBALI</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

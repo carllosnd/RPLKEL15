@@ -1,0 +1,46 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+<div class="container">
+    <a class="btn btn-primary mb-2" href="{% url 'tambah_product' %}">Tambah Product</a>
+    {% if messages %}
+    {% for message in messages %}
+    <p class="alert alert-warning alert-dismissible fade show" role="alert">{{ message }}</p>
+    {% endfor %}
+    {% endif %}
+    <form action="{% url 'tambah_product' %}" method="POST">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>No</th>
+                    <th>Gambar</th>
+                    <th>Nama Produk</th>
+                    <th>Harga Produk</th>
+                    <th>Deskripsi</th>
+                    <th>Stok</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dataproduct in data_product %}
+                <tr>
+                    <td>{{ dataproduct.idproduk }}</td>
+                    <td>
+                        <img style="width: 300px;" src="{{ dataproduct.gambar }}" alt="">
+                    </td>
+                    <td>{{ dataproduct.namaproduct }}</td>
+                    <td>{{ dataproduct.hargaproduct }}</td>
+                    <td>{{ dataproduct.deskripsi }}</td>
+                    <td>{{ dataproduct.stok }}</td>
+                    <td>
+                        <a href="{% url 'updateproduct' dataproduct.idproduk %}">UPDATE</a>
+                        <a onclick="return confirm('Apakah anda ingin menghapus data ini?')"
+                            href="{% url 'deleteproduct' dataproduct.idproduk %}">DELETE</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+</div>
+{% endblock %}
