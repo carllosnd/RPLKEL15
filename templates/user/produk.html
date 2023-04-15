@@ -1,12 +1,73 @@
+{% extends 'layout/base.html' %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-    
+    <h1>Data Produk</h1>
+    <div class="card-body">
+        <table width="100%">
+            <thead>
+                {% for user in produk %}
+                <div class="form-group">
+                    <tr>
+                        <td rowspan="6">
+                            <img style="width: 200px;" src="{{ user.gambar }}" alt="">
+                        </td>
+                    </tr>
+
+                </div>
+                <div>
+                    <tr>
+                        <td>
+                            {{ user.namaproduct}}
+                        </td>
+                    </tr>
+                </div>
+                <div>
+                    <tr>
+                        <td>
+                            Rp. {{ user.hargaproduct}}
+                        </td>
+                    </tr>
+                </div>
+                <div>
+                    <tr>
+                        <td>
+                            {{ user.deskripsi }}
+                        </td>
+                    </tr>
+                </div>
+                <div>
+                    <tr>
+                        <td>
+                            {{ user.stok }}
+                        </td>
+                    </tr>
+                </div>
+                <tr>
+                    <td>
+                        <a class="btn btn-primary" href="{% url 'pemesanan' %}">
+                            Tambahkan Kedalam Pesanan
+                            <i class="fa fa-plus">
+
+                            </i>
+                        </a>
+
+                    </td>
+                </tr>
+                {% endfor %}
+            </thead>
+        </table>
+    </div>
 </body>
+
 </html>
+{% endblock %}

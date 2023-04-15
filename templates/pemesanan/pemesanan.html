@@ -9,7 +9,7 @@
         {% endfor %}
         {% endif %}
         <a class="btn btn-primary mb-2" href="{% url 'tambahpemesanan'%}">Tambah Pesanan</a>
-        <h1>Transaksi</h1>
+        <h1>Data Pesanan</h1>
         <table class="table table-striped table-hover">
             <thead class="table-dark">
                 <tr>
@@ -30,8 +30,8 @@
                     <td>{{ datapemesanan.tglpemesanan }}</td>
                     <td>{{ datapemesanan.idproduk.namaproduct }}</td>
                     <td>{{ datapemesanan.jumlahpemesanan }}</td>
-                    <td>{{ datapemesanan.idproduk.hargaproduct }}</td>
-                    <td>{{ datapemesanan.totalbayar }}</td>
+                    <td>Rp. {{ datapemesanan.idproduk.hargaproduct }}</td>
+                    <td>Rp.{{ datapemesanan.totalbayar }}</td>
                     <td>{{ datapemesanan.keterangan }}</td>
                     <td>
                         <a href="{% url 'updatepesanan' datapemesanan.idpemesanan %}">UBAH</a>

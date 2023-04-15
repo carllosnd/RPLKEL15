@@ -1,4 +1,5 @@
 import datetime
+from multiprocessing import context
 import os
 import time
 from django.db import connection
@@ -12,8 +13,12 @@ import json
 def index(request):
     return render(request, 'layout/base.html')
 
-def
-
+def produk(request):
+    produk = UserProduct.objects.all();
+    context = {
+        'produk' : produk
+    }
+    return render(request, 'user/produk.html', context)
 
 def tambah_product(request):
     
@@ -130,15 +135,23 @@ def updatepesanan(request, idpemesanan):
 
 
 def postupdate_pesanan(request):
-    id = request.POST['idpemesanan']
-    product = UserProduct.objects.all()
+    idpemesanan = request.POST['idpemesanan']
+    jlhpemesanan = request.POST['jumlahpemesanan']
+    keterangan = request.POST['keterangan']
+    idmakanan = request.POST['idproduk']
     
-    pesanan = Pemesanan.objects.get(idpemesanan=id)
-    pesanan.jumlahpemesanan = request.POST.get('jumlahpemesanan')
-    pesanan.keterangan = request.POST.get('keterangan')
+    product = UserProduct.objects.get(idproduk = idmakanan)
+    
+    pesanan = Pemesanan.objects.get(idpemesanan=idpemesanan)
+    pesanan.tglpemesanan = datetime.date.today()
+    pesanan.jumlahpemesanan = jlhpemesanan
+    pesanan.totalbayar = int(jlhpemesanan) * product.hargaproduct
+    pesanan.keterangan = keterangan
+    idproduk=product
     pesanan.save()
-    messages.success(request, 'Data pesanan berhasil di ubah')
+    messages.success(request, 'pesanan berhasil diubah')
     return redirect('/pemesanan')
+    
     
 def delete_pesanan(request, idpemesanan):
     pesanan = Pemesanan.objects.get(idpemesanan=idpemesanan).delete()
