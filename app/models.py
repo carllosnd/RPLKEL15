@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 class UserProduct(models.Model):
     idproduk = models.CharField(primary_key=True, max_length=4)
@@ -15,3 +16,5 @@ class Pemesanan(models.Model):
     totalbayar = models.IntegerField()
     keterangan = models.CharField(max_length=255)
     idproduk = models.ForeignKey(UserProduct, on_delete=models.CASCADE)
+
+

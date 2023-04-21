@@ -5,13 +5,16 @@ import time
 from django.db import connection
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+
 from .models import Pemesanan, UserProduct
 from django.contrib import messages
 import json
 
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import login as auth_login, logout as auth_logout
 
 def index(request):
-    return render(request, 'layout/base.html')
+    return render(request, 'layout/index.html')
 
 def produk(request):
     produk = UserProduct.objects.all();
@@ -128,8 +131,10 @@ def pemesanan(request):
 
 def updatepesanan(request, idpemesanan):
     data_pesanan = Pemesanan.objects.get(idpemesanan=idpemesanan)
+    product = UserProduct.objects.all()
     context = {
-        'data_pesanan': data_pesanan
+        'data_pesanan': data_pesanan,
+        'product': product
     }
     return render(request, 'pemesanan/update-pesanan.html', context)
 
@@ -138,16 +143,16 @@ def postupdate_pesanan(request):
     idpemesanan = request.POST['idpemesanan']
     jlhpemesanan = request.POST['jumlahpemesanan']
     keterangan = request.POST['keterangan']
-    idmakanan = request.POST['idproduk']
+    idmakanan = request.POST['idmakanan']
     
-    product = UserProduct.objects.get(idproduk = idmakanan)
+    product = UserProduct.objects.get(idmakanan=idmakanan)
     
     pesanan = Pemesanan.objects.get(idpemesanan=idpemesanan)
     pesanan.tglpemesanan = datetime.date.today()
     pesanan.jumlahpemesanan = jlhpemesanan
     pesanan.totalbayar = int(jlhpemesanan) * product.hargaproduct
     pesanan.keterangan = keterangan
-    idproduk=product
+    idmakanan=product
     pesanan.save()
     messages.success(request, 'pesanan berhasil diubah')
     return redirect('/pemesanan')
@@ -157,3 +162,33 @@ def delete_pesanan(request, idpemesanan):
     pesanan = Pemesanan.objects.get(idpemesanan=idpemesanan).delete()
     messages.success(request, 'Berhasil hapus pesanan')
     return redirect('/pemesanan')
+
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Akun berhasil didaftarkan')
+            return redirect('/login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'auth/register.html', {'form': form})
+
+def login(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            auth_login(request, user)
+            return redirect('/welcome')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'auth/login.html', {'form': form})
+
+def logout(request):
+    auth_logout(request)
+    return redirect('/login')
+
+

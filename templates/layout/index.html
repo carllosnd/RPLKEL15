@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous" />
+
+    <!-- My CSS -->
+    <link rel="stylesheet" href="style.css" />
+    <title>{% block title %} {% endblock %}</title>
+  </head>
+  <style>
+    ::-webkit-scrollbar {
+        display: none;
+    }
+    .selector-for-some-widget {
+        box-sizing: content-box;
+    }
+    body {
+        background-color: whitesmoke;
+        padding: 0px;
+        margin: 0px;
+        width: 100%;
+        height: 100%;
+    }
+    .jumbotron {
+        padding-top: 6rem;
+    }
+    #about {
+        background-color: #baffc0;
+    }
+    #design {
+        background-color: #7cec87;
+    }
+    .card {
+        position: relative;
+        overflow: hidden;
+    }
+    .img-title {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(5, 5, 5, 0.7);
+        top: 300px;
+        transition: all 0.5s ease-in;
+    }
+    .img-title p,
+        h3 {
+        line-height: 20px;
+        position: relative;
+        top: 130px;
+        text-shadow: rgba(5, 5, 5, 0.5);
+    }
+    .card:hover .img-title {
+        top: 0;
+        transition: all 0.5s ease-out;
+    }
+    .card img {
+        transform: scale(1);
+        transition: all 0.3s ease-out;
+    }
+    .card:hover img {
+        transform: scale(1.1);
+        transition: all 0.3s ease-in;
+    }
+    #testimoni {
+        background-color: #baffc0;
+    }
+    #contact {
+        background-color: whitesmoke;
+    }
+    section {
+        padding-top: 5rem;
+    }
+  </style>
+  <body id="home">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ" crossorigin="anonymous"></script>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow fixed-top">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{%url 'login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">Signup</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+  <!-- Akhir Navbar -->
+  <!-- Jumbotron -->
+    <section class="jumbotron">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-mb-3">                 
+                    <img src="/static/assets/dist/img/food-logo-59E5A73AFD-seeklogo.com.png" alt="Maje Graphics" width="auto"/>
+                    <h1 class="display-4 fw-bold"></br>Website Beli Makanan Online</h1>
+                    <p class="lead">Project Rekayasa Perangkat Lunak Kelompok 1.5</p>         
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Akhir Jumbotron -->
+  </body>
+  <div>
+    {% block content %}{% endblock %}
+  </div>
+</html>
