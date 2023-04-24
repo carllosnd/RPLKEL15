@@ -1,4 +1,4 @@
-{% extends 'layout/index.html' %}
+{% extends 'layout/basefirst.html' %}
 
 {% block content %}
 <!DOCTYPE html>
@@ -11,22 +11,45 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 </head>
 <body>
-  {% if messages %}
+  <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
+    <div class="row gx-lg-5 align-items-center mb-5">
+      <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
+        <img src="/static/assets/dist/img/food-logo-59E5A73AFD-seeklogo.com.png" alt="">
+        <h1 class="display-4 fw-bold"></br>Website Pembelian Makanan</h1> <br>
+        <p class="lead">Project Rekayasa Perangkat Lunak Kelompok 1.5</p>  
+        </h1>
+        
+      </div>
+
+      <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
+        <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
+        <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
+
+        <div class="card bg-glass">
+          <div class="card-body px-4 py-5 px-md-5">
+            {% if messages %}
           {% for message in messages %}
           <p>{{ message }}</p>
           {% endfor %}
   {% endif %}
   <div class="container">
-    <h2>Login</h2>
+    <h2>Login Admin</h2>
     <form method="post">
       {% csrf_token %}
       <div class="form-outline mb-4">
           {{ form.as_p }}
       </div>
       <button class="btn btn-primary" type="submit">Login</button> <br>
-      <a href="{% url 'register' %}">Belum punya akun? Silahkan daftar disini!</a>
     </form>
   </div>
+  </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 </body>
 </html>
 {% endblock %}

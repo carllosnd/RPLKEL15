@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Daftar Penjualan</title>
+</head>
+<body>
+    <h1>Daftar Penjualan</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Produk</th>
+                <th>Pemesanan</th>
+                <th>Harga Jual</th>
+                <th>Stok Terjual</th>
+                <th>Total Terjual</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for Penjualan in daftar_penjualan %}
+                <tr>
+                    <td>{{ penjualan.idproduk.nama }}</td>
+                    <td>{{ penjualan.idpemesanan.nomor }}</td>
+                    <td>{{ penjualan.hargajual }}</td>
+                    <td>{{ penjualan.stok_terjual }}</td>
+                    <td>{{ penjualan.total_terjual }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

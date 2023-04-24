@@ -1,8 +1,7 @@
-{% extends 'layout/base.html' %}
+{% extends 'layout/baseadmin.html' %}
 
 {% block content %}
 <div class="container">
-    <a class="btn btn-primary mb-2" href="{% url 'tambah_product' %}">Tambah Product</a>
     {% if messages %}
     {% for message in messages %}
     <p class="alert alert-warning alert-dismissible fade show" role="alert">{{ message }}</p>

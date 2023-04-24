@@ -17,4 +17,9 @@ class Pemesanan(models.Model):
     keterangan = models.CharField(max_length=255)
     idproduk = models.ForeignKey(UserProduct, on_delete=models.CASCADE)
 
-
+class Penjualan(models.Model):
+    idproduk = models.ForeignKey(UserProduct, on_delete=models.CASCADE)
+    idpemesanan = models.ForeignKey(Pemesanan, on_delete=models.CASCADE)
+    hargajual = models.DecimalField(max_digits=15, decimal_places=2)
+    stok_terjual = models.IntegerField(default=0)
+    total_terjual = models.DecimalField(max_digits=15, decimal_places=2, default=0)

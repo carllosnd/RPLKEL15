@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import index, tambah_product, postproduct, dataproduct, updateproduct, postupdate_product, delete_product 
 from .views import welcome, pemesanan, tambah_pemesanan, postpemesanan, updatepesanan, postupdate_pesanan, delete_pesanan, produk
-from .views import register, login, logout
+from .views import login, logout, penjualan
 
 urlpatterns = [
     path('', index, name="home"),
@@ -19,7 +19,7 @@ urlpatterns = [
     path('postupdate_pesanan', postupdate_pesanan, name="postupdatepesanan"),
     path('delete_pesanan/<str:idpemesanan>', delete_pesanan, name="deletepesanan"),
     path('produk', produk, name="produk"),
-    path("register", register, name="register"),
     path("login", login, name="login"),
-    path("logout", logout, name="logout")
+    path("logout", logout, name="logout"),
+    path('penjualan',penjualan,name='penjualan')
 ]
