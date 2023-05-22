@@ -1,31 +1,25 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Daftar Penjualan</title>
-</head>
-<body>
-    <h1>Daftar Penjualan</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Produk</th>
-                <th>Pemesanan</th>
-                <th>Harga Jual</th>
-                <th>Stok Terjual</th>
-                <th>Total Terjual</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for Penjualan in daftar_penjualan %}
-                <tr>
-                    <td>{{ penjualan.idproduk.nama }}</td>
-                    <td>{{ penjualan.idpemesanan.nomor }}</td>
-                    <td>{{ penjualan.hargajual }}</td>
-                    <td>{{ penjualan.stok_terjual }}</td>
-                    <td>{{ penjualan.total_terjual }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
-</html>
+{% extends 'layout/baseadmin.html' %} {% block content %}
+<div class="container">
+  <h1>Daftar Penjualan</h1>
+  <table class="table table-striped table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>Nama Produk</th>
+        <th>Harga Jual</th>
+        <th>Stok</th>
+        <th>Total Terjual</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for penjualan in daftar_penjualan %}
+      <tr>
+        <td>{{ penjualan.idproduk.namaproduct }}</td>
+        <td>{{ penjualan.hargajual }}</td>
+        <td>{{ penjualan.stok }}</td>
+        <td>{{ penjualan.total_terjual }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

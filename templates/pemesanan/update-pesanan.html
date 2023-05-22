@@ -9,6 +9,7 @@
         {% endif %}
         <form action="{% url 'postupdatepesanan' %}" method="POST">
             {% csrf_token %}
+            <input type="hidden" name="idproduk" value="{{ data_pesanan.idproduk.idproduk }}" >
             <h1>UPDATE PESANAN</h1>
             <div class="form-group">
                 <p>Id Pemesanan :</p>

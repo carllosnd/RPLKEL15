@@ -1,0 +1,69 @@
+{% extends 'layout/base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Struk Pembayaran</h1>
+    <div class="card-body">
+        <table width="100%">
+            <thead>
+                {% for bayar in view_transaksi %}
+                
+                <div>
+                    <tr>
+                        <td>
+                            {{ bayar.idpembayaran }}
+                        </td>
+                    </tr>
+                </div>
+                <div>
+                    <tr>
+                        <td>
+                            {{ bayar.nama }}
+                        </td>
+                    </tr>
+                </div>
+                <div>
+                    <tr>
+                        <td>
+                            {{ bayar.alamat }}
+                        </td>
+                    </tr>
+                </div>
+                <div>
+                    <tr>
+                        <td>
+                            {{ bayar.tglpemesanan }}
+                        </td>
+                    </tr>
+                </div>
+                <div>
+                    <tr>
+                        <td>
+                            {{ bayar.totalpembayaran }}
+                        </td>
+                    </tr>
+                </div>
+                <div>
+                    <tr>
+                        <td>
+                            {{ bayar.metodepembayaran }}
+                        </td>
+                    </tr>
+                </div>
+                {% endfor %}
+            </thead>
+        </table>
+    </div>
+</body>
+
+</html>
+{% endblock %}

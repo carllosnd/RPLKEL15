@@ -15,11 +15,25 @@ class Pemesanan(models.Model):
     jumlahpemesanan = models.IntegerField()
     totalbayar = models.IntegerField()
     keterangan = models.CharField(max_length=255)
+    statuspembayaran = models.CharField(max_length=1,null=True)
     idproduk = models.ForeignKey(UserProduct, on_delete=models.CASCADE)
+    
+class Transaksi(models.Model):
+    idpembayaran = models.CharField(primary_key=True, max_length=4)
+    nama = models.CharField(max_length=255)
+    alamat = models.CharField(max_length=255)
+    tglpembayaran = models.DateField()
+    totalpembayaran = models.IntegerField()
+    metodepembayaran = models.CharField(max_length=255)
 
 class Penjualan(models.Model):
     idproduk = models.ForeignKey(UserProduct, on_delete=models.CASCADE)
-    idpemesanan = models.ForeignKey(Pemesanan, on_delete=models.CASCADE)
     hargajual = models.DecimalField(max_digits=15, decimal_places=2)
-    stok_terjual = models.IntegerField(default=0)
-    total_terjual = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    stok = models.IntegerField(default=0)
+    total_terjual = models.IntegerField(default=0)
+
+class Notifikasi(models.Model):
+    idnotifikasi = models.AutoField(primary_key=True)
+    pesannotifikasi = models.CharField(max_length=225)
+    statusnotifikasi = models.CharField(max_length=1)
+    
