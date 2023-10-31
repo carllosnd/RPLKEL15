@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <style>
+    @media screen, print {
+      body {
+        font-family: Georgia, serif;
+        font-size: 12pt;
+      }
+      table.data {
+        border: 1px solid;
+        width: 100%;
+        border-collapse: collapse;
+      }
+      table.data > tbody > tr > td {
+        border: 1px solid;
+        padding: 1px 2px;
+      }
+      table.data > thead > tr > th {
+        border: 1px solid;
+        background-color: #eaeaea;
+        padding: 1px 2px;
+      }
+      .left {
+        text-align: left;
+      }
+      .right {
+        text-align: right;
+      }
+      .center {
+        text-align: center;
+      }
+      .bg-gray {
+        background-color: #eaeaea;
+        padding: 10px !important;
+        font-weight: bold;
+      }
+    }
+  </style>
+  <body>
+    <div class="container">
+      <h1 class="center">Data Customer</h1>
+      <table class="data"  border="1px">
+        <thead>
+          <tr>
+            <th scope="col" class="center">Nama Customer</th>
+            <th scope="col" class="center">Alamat Customer</th>
+            <th scope="col" class="center">Tanggal Pemesanan</th>
+            <th scope="col" class="center">Total Pembayaran</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for bayar in view_customer %}
+          <tr>
+            <td>{{ bayar.nama }}</td>
+            <td>{{ bayar.alamat }}</td>
+            <td>{{ bayar.tglpembayaran }}</td>
+            <td>Rp.{{ bayar.totalpembayaran }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4">Tidak ada data penjualan.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,66 @@
+
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+{% for bayar in view_transaksi %}
+<div class="container">
+    <div class="row">
+        <div class="well col-xs-10 col-sm-10 col-md-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
+            
+            <div class="row">
+                <div class="text-right col-md-12">
+                    <address>
+                        <strong>RPL Kel. 15</strong>
+                        <br>
+                        Website Penjualan-Pembelian <br>
+                        Makanan Online
+                        <br>
+                        Universitas Kristen Immanuel Yogyakarta
+                    </address>
+                </div>
+                <!-- <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                </div> -->
+            </div>
+            
+            <div class="row">
+                
+                <div class="text-center">
+                            <img src="/static/assets/dist/img/food-logo-59E5A73AFD-seeklogo.com.png" alt="" width="200px">
+                            <h1>Struk Pembayaran</h1>
+                            <p>
+                                <em>{{ bayar.tglpembayaran }} | No. Pembayaran : {{ bayar.idpembayaran}}</em>
+                            </p>
+                        </div>
+                        <div class="col-md-12" >
+                            <h5> 
+                                Nama Customer : {{ bayar.nama}}
+                            </h5>
+                            <h5> 
+                                Alamat Customer : {{ bayar.alamat}}
+                            </h5>
+                            <h5> 
+                                Total Pembayaran : Rp.{{ bayar.totalpembayaran}}
+                            </h5>
+                            <h5> 
+                                Metode Pembayaran : {{ bayar.metodepembayaran}}
+                            </h5>
+                        </div>
+                
+            </div>
+            <div class="text-center">
+                <br>
+                <h1 style="text-align:center;">
+                    Terimakasih!
+                </h1>
+                <a target="_blank" class="btn btn-danger" href="{% url 'export_pdf_transaksi' %}">
+                    Download Struk Pembayaran
+                    <i class="far fa-file-pdf"></i>
+                </a>
+                <p>Setelah pembayaran, harap struk pembayaran langsung di download!</p>
+                <a class="text-center" href="{% url 'welcome' %}">Back to home</a>
+            </div>
+        </div>
+    </div>
+{% endfor %}

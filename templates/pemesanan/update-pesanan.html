@@ -3,10 +3,10 @@
 <div class="card">
     <div class="card-body">
         {% if messages %}
-        {% for message in messages %}
-        <p>{{ message }}</p>
-        {% endfor %}
-        {% endif %}
+            {% for message in messages %}
+                <p class="alert alert-warning alert-dismissible fade show" role="alert">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
         <form action="{% url 'postupdatepesanan' %}" method="POST">
             {% csrf_token %}
             <input type="hidden" name="idproduk" value="{{ data_pesanan.idproduk.idproduk }}" >

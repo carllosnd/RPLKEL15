@@ -137,16 +137,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <i class="fas fa-bell mr-2"></i>{{ ln.pesannotifikasi }}
                                 </a>
                             {% endfor %}
+                            <div class="dropdown-divider"></div>
+                            <a style="text-align: center;" href="{% url 'tandaisemuaterbaca' %}" class="dropdown-item">
+                                Tandai Semua Terbaca
+                            </a>
                         {% else %}
                             <span class="dropdown-header">Tidak Ada Notifikasi</span>
                         {% endif %}
                     </div>
-                </li>
+                </li>                
                 <li class="nav-item">
                     <a href="{% url 'logout' %}" class="nav-link"> 
-                        <p>
-                            Logout
-                        </p>
+                        <i class="fas fa-sign-out-alt">Logout</i>
                     </a>
                 </li>
 
@@ -199,6 +201,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <i class="nav-icon fas fa-swatchbook"></i>
                                 <p>
                                     Data Penjualan
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'datacustomer' %}" class="nav-link">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>
+                                    Data Customer
                                 </p>
                             </a>
                         </li>

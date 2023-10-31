@@ -2,12 +2,9 @@
 <div class="container">
   {% if messages %}
     {% for message in messages %}
-    <p class="alert alert-warning alert-dismissible fade show" role="alert">{{ message }}</p>
+      <p class="alert alert-warning alert-dismissible fade show" role="alert">{{ message }}</p>
     {% endfor %}
-    {% endif %}
-  <a class="btn btn-primary mb-2" href="{% url 'tambahpemesanan'%}"
-    >Tambah Pesanan</a
-  >
+  {% endif %}
   <h1>Data Pesanan</h1>
   <table class="table table-striped table-hover">
     <thead class="table-dark">
@@ -42,10 +39,11 @@
       {% endfor %}
     </tbody>
   </table>
-  <tr>
-    <button class="btn btn-primary" type="submit" >
-        <a href="{% url 'transaksi' %}"></a>
-    </button>
-  </tr>
+  <td>
+    <a class="btn btn-primary" href="{% url 'transaksi' %}">
+        Bayar Sekarang
+    </a>
+
+</td>
 </div>
 {% endblock %}

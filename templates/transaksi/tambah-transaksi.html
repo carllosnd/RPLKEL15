@@ -1,27 +1,14 @@
 {% extends 'layout/base.html' %}
 {% block content %}
     <div class="container p-2">
-    {% if messages %}
-        {% for message in messages %}
-        <p>{{ message }}</p>
-        {% endfor %}
-    {% endif %}
+        {% if messages %}
+            {% for message in messages %}
+                <p class="alert alert-warning alert-dismissible fade show" role="alert">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
     <form action="{% url 'postpembayaran' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <h1>Form Pembayaran</h1>
-        <div class="form-group">
-            <p>Id Pembayaran</p>
-            <input class="form-control" type="text" name="idpembayaran" maxlength="4" required>
-        </div>
-        <!-- <div class="form-group">
-            <p>Pilih Makanan</p>
-            <select required class="form-control" name="idproduk" id="">
-                <option value="" disabled selected>Pilih makanan</option>
-                {% for dm in datamakanan %}
-                    <option value="{{ dm.idproduk }}"> {{ dm.namaproduct }} </option>
-                {% endfor %}
-              </select>
-        </div> -->
         <div class="form-group">
             <p>Nama Pemesan</p>
             <input class="form-control" type="text" name="nama" required>
@@ -37,23 +24,23 @@
         <div class="form-group">
             <p>Metode Pembayaran </p>
             <label>
-                <input type="radio" name="metodepembayaran">
+                <input type="radio" name="metodepembayaran" value="ShopeePay">
                 <img src="/static/assets/dist/img/ShopeePay Logo.png" width="100px">
             </label>
             <label>
-                <input type="radio" name="metodepembayaran">
+                <input type="radio" name="metodepembayaran" value="Dana">
                 <img src="/static/assets/dist/img/Dana.png" width="100px">
             </label>
             <label>
-                <input type="radio" name="metodepembayaran">
+                <input type="radio" name="metodepembayaran" value="Gopay">
                 <img src="/static/assets/dist/img/GoPay-logo-2048x1392.png" width="100px">
             </label>
             <label>
-                <input type="radio" name="metodepembayaran">
+                <input type="radio" name="metodepembayaran" value="Ovo">
                 <img src="/static/assets/dist/img/OVO.png" width="100px">
             </label>
             <label>
-                <input type="radio" name="metodepembayaran">
+                <input type="radio" name="metodepembayaran" value="Transfer Antar Bank">
                 <img src="/static/assets/dist/img/bank-transfer-logo-768x280.png" width="100px">
             </label>
         </div>

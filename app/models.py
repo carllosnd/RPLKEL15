@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+
 class UserProduct(models.Model):
     idproduk = models.CharField(primary_key=True, max_length=4)
     gambar = models.ImageField(upload_to='static/assets/dist/img', blank=True, null=True)
@@ -25,6 +26,7 @@ class Transaksi(models.Model):
     tglpembayaran = models.DateField()
     totalpembayaran = models.IntegerField()
     metodepembayaran = models.CharField(max_length=255)
+    is_downloaded = models.BooleanField(default=False)
 
 class Penjualan(models.Model):
     idproduk = models.ForeignKey(UserProduct, on_delete=models.CASCADE)

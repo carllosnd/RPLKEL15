@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <style>
+    @media screen, print {
+      body {
+        font-family: Georgia, serif;
+        font-size: 12pt;
+      }
+      table.data {
+        border: 1px solid;
+        width: 100%;
+        border-collapse: collapse;
+      }
+      table.data > tbody > tr > td {
+        border: 1px solid;
+        padding: 1px 2px;
+      }
+      table.data > thead > tr > th {
+        border: 1px solid;
+        background-color: #eaeaea;
+        padding: 1px 2px;
+      }
+      .left {
+        text-align: left;
+      }
+      .right {
+        text-align: right;
+      }
+      .center {
+        text-align: center;
+      }
+      .bg-gray {
+        background-color: #eaeaea;
+        padding: 10px !important;
+        font-weight: bold;
+      }
+    }
+  </style>
+  <body>
+    <div class="container">
+      <h1 class="center">Data Penjualan</h1>
+      <table class="data" border="1">
+        <thead>
+          <tr>
+            <th scope="col" class="center">Produk</th>
+            <th scope="col" class="center">Harga Jual</th>
+            <th scope="col" class="center">Stok Tersisa</th>
+            <th scope="col" class="center">Total Terjual</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for penjualan in daftar_penjualan %}
+          <tr>
+            <td class="center">{{ penjualan.idproduk.namaproduct }}</td>
+            <td class="center">Rp {{ penjualan.hargajual }}</td>
+            <td class="center">{{ penjualan.stok }}</td>
+            <td class="center">{{ penjualan.total_terjual }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4">Tidak ada data penjualan.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

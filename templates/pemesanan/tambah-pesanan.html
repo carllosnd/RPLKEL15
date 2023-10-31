@@ -1,26 +1,24 @@
 {% extends 'layout/base.html' %}
 {% block content %}
+
     <div class="container p-2">
-    {% if messages %}
-        {% for message in messages %}
-        <p>{{ message }}</p>
-        {% endfor %}
-    {% endif %}
+        {% if messages %}
+            {% for message in messages %}
+                <p class="alert alert-warning alert-dismissible fade show" role="alert">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
     <form action="{% url 'postpemesanan' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <h1>Tambah Data Pesanan</h1>
         <div class="form-group">
-            <p>Id Pemesanan</p>
-            <input class="form-control" type="text" name="idpemesanan" id="idpemesanan" maxlength="4" required>
-        </div>
-        <div class="form-group">
-            <p>Pilih Makanan</p>
+            <p>Nama Makanan</p>
             <select required class="form-control" name="idproduk" id="">
                 <option value="" disabled selected>Pilih makanan</option>
                 {% for dm in datamakanan %}
-                    <option value="{{ dm.idproduk }}"> {{ dm.namaproduct }} </option>
+                    <option value="{{ dm.idproduk }}" {% if dm.idproduk == idproduk %}selected{% endif %}>{{ dm.namaproduct }}</option>
                 {% endfor %}
-              </select>
+            </select>
+                      
         </div>
         <div class="form-group">
             <p>Jumlah Pemesanan</p>
@@ -33,7 +31,7 @@
         <br>
         <br>
         <button class="btn btn-success" type="submit">SUBMIT</button>
-        <a class="btn btn-warning " href="{% url 'pemesanan' %}">KEMBALI</a>
+        <a class="btn btn-warning " href="{% url 'produk' %}">KEMBALI</a>
     </form>
 </div>
 {% endblock %}

@@ -1,3 +1,5 @@
+
+
 {% extends 'layout/base.html' %}
 {% block content %}
 <!DOCTYPE html>
@@ -11,54 +13,64 @@
 </head>
 
 <body>
-    <h1>Struk Pembayaran</h1>
-    <div class="card-body">
+    <h1>Data Makanan</h1>
+    <!-- <div class="card-body"> -->
+        <div class="card-header">
+			<div class="card-tools">
+				<form action="">
+					<input  placeholder="Search Produk" type="text" name="search"
+						class="from-control">
+				</form>
+			</div>
+	    </div>
         <table width="100%">
             <thead>
-                {% for bayar in view_transaksi %}
-                
+                {% for user in produk %}
+                <div class="form-group">
+                    <tr>
+                        <td rowspan="6">
+                            <img style="width: 200px;" src="{{ user.gambar }}" alt="">
+                        </td>
+                    </tr>
+
+                </div>
                 <div>
                     <tr>
                         <td>
-                            {{ bayar.idpembayaran }}
+                            {{ user.namaproduct}}
                         </td>
                     </tr>
                 </div>
                 <div>
                     <tr>
                         <td>
-                            {{ bayar.nama }}
+                            Rp. {{ user.hargaproduct}}
                         </td>
                     </tr>
                 </div>
                 <div>
                     <tr>
                         <td>
-                            {{ bayar.alamat }}
+                            {{ user.deskripsi }}
                         </td>
                     </tr>
                 </div>
                 <div>
                     <tr>
                         <td>
-                            {{ bayar.tglpemesanan }}
+                            Stok : {{ user.stok }}
                         </td>
                     </tr>
                 </div>
-                <div>
-                    <tr>
-                        <td>
-                            {{ bayar.totalpembayaran }}
-                        </td>
-                    </tr>
-                </div>
-                <div>
-                    <tr>
-                        <td>
-                            {{ bayar.metodepembayaran }}
-                        </td>
-                    </tr>
-                </div>
+                <tr>
+                    <td>
+                        <a class="btn btn-primary" href="{% url 'tambahpemesanan' %}">
+                            Tambahkan Kedalam Pesanan
+                            <i class="fa fa-plus"></i>
+                        </a>
+
+                    </td>
+                </tr>
                 {% endfor %}
             </thead>
         </table>

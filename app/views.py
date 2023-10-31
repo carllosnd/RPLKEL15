@@ -2,6 +2,11 @@ import datetime
 from multiprocessing import context
 import os
 import time
+
+import random
+import string
+
+
 from django.db import connection
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404, render, redirect
@@ -15,19 +20,28 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+
 
 def index(request):
     return render(request, 'layout/index.html')
 
 
 def produk(request):
+    search_term = request.GET.get('search')
     produk = UserProduct.objects.all()
+
+    if search_term:
+        produk = produk.filter(namaproduct__icontains=search_term)
+        
     context = {
-        'produk': produk
+        'produk': produk,
+        'search_term' : search_term
     }
     return render(request, 'user/produk.html', context)
 
-@login_required(login_url=index)
+
 def tambah_product(request):
 
     return render(request, 'products/tambah-product.html')
@@ -65,9 +79,9 @@ def postproduct(request):
         messages.success(request, 'data product berhasil disimpan')
     return redirect('/data_product')
 
-@login_required(login_url=index)
+
 def dataproduct(request):
-    data_product = UserProduct.objects.all().order_by('-idproduk')
+    data_product = UserProduct.objects.all().order_by('idproduk')
     context = {
         'data_product': data_product
     }
@@ -103,7 +117,7 @@ def postupdate_product(request):
     messages.success(request, 'Data berhasil di ubah')
     return redirect('/data_product')
 
-
+@login_required(login_url='/login')
 def delete_product(request, idproduk):
     product = UserProduct.objects.get(idproduk=idproduk).delete()
     messages.success(request, 'Berhasil hapus data produk')
@@ -114,61 +128,64 @@ def welcome(request):
     return render(request, 'layout/index.html')
 
 
-def tambah_pemesanan(request):
+def tambah_pemesanan(request, idproduk):
     datamakanan = UserProduct.objects.all()
     context = {
-        'datamakanan': datamakanan
+        'datamakanan': datamakanan,
+        'idproduk' : idproduk
     }
     return render(request, 'pemesanan/tambah-pesanan.html', context)
 
+def generate_random_id():
+    while True:
+        # Generate angka acak dengan 4 digit
+        random_id = random.randint(1000, 9999)
+        
+        # Periksa apakah ID pemesanan sudah ada di database
+        if not Pemesanan.objects.filter(idpemesanan=random_id).exists():
+            return random_id
 
 def postpemesanan(request):
-    idpemesanan = request.POST['idpemesanan']
     jlhpemesanan = request.POST['jumlahpemesanan']
     keterangan = request.POST['keterangan']
     idmakanan = request.POST['idproduk']
     
     product = UserProduct.objects.get(idproduk = idmakanan)
     
-    if Pemesanan.objects.filter(idpemesanan=idpemesanan).exists():
-        messages.error(request, 'id pemesanan sudah ada')
-        return redirect('/tambah_pemesanan')
     if int (product.stok) <= 0:
         messages.error(request, 'Stok makanan sudah habis')
         return redirect('/tambah_pemesanan')
-    else:
-        # insert pe = 'msanan
-        tambah_pemesanan = Pemesanan(
-            idpemesanan=idpemesanan,
-            tglpemesanan=datetime.date.today(),
-            jumlahpemesanan=jlhpemesanan,
-            totalbayar= product.hargaproduct * int(jlhpemesanan),
-            keterangan=keterangan,
-            idproduk=product,
-            statuspembayaran='B'
-        )
-        tambah_pemesanan.save()
-        # update penjualan
-        penjualan = Penjualan.objects.get(idproduk=idmakanan)
-        penjualan.stok = penjualan.stok - int(jlhpemesanan)
-        penjualan.total_terjual = penjualan.total_terjual + int(jlhpemesanan)
-        penjualan.save()
-        #update produk
-        produk = UserProduct.objects.get(idproduk=idmakanan)
-        produk.stok = str(int(produk.stok) - int(jlhpemesanan))
-        produk.save()
-        # buat notifikasi
-        buat_notifikasi = Notifikasi(
-            pesannotifikasi = 'Ada Pesanan Masuk',
-            statusnotifikasi = 'B'
-        )
-        buat_notifikasi.save()
-        messages.success(request, 'data pesananan berhasil disimpan')
+    # insert pemesanan
+    tambah_pemesanan = Pemesanan(
+        idpemesanan = generate_random_id(),
+        tglpemesanan=datetime.date.today(),
+        jumlahpemesanan=jlhpemesanan,
+        totalbayar= product.hargaproduct * int(jlhpemesanan),
+        keterangan=keterangan,
+        idproduk=product,
+        statuspembayaran='B'
+    )
+    tambah_pemesanan.save()
+    # update penjualan
+    penjualan = Penjualan.objects.get(idproduk=idmakanan)
+    penjualan.stok = penjualan.stok - int(jlhpemesanan)
+    penjualan.total_terjual = penjualan.total_terjual + int(jlhpemesanan)
+    penjualan.save()
+    #update produk
+    produk = UserProduct.objects.get(idproduk=idmakanan)
+    produk.stok = str(int(produk.stok) - int(jlhpemesanan))
+    produk.save()
+    # buat notifikasi
+    buat_notifikasi = Notifikasi(
+        pesannotifikasi = 'Ada Pesanan Masuk',
+        statusnotifikasi = 'B'
+    )
+    buat_notifikasi.save()
+    messages.success(request, 'data pesananan berhasil disimpan')
     return redirect('/pemesanan')
 
 
 def pemesanan(request):
-
     view = Pemesanan.objects.filter(statuspembayaran='B').order_by('-idpemesanan')
     context = {
         'view_pesanan': view
@@ -232,8 +249,9 @@ def logout(request):
     auth_logout(request)
     return redirect('/welcome')
 
+@login_required(login_url='/login')
 def penjualan(request):
-    daftar_penjualan = Penjualan.objects.all()
+    daftar_penjualan = Penjualan.objects.all().order_by('-total_terjual')
     list_notifikasi = Notifikasi.objects.filter(statusnotifikasi='B')
     jumlah_notifikasi = '0'
     if list_notifikasi:
@@ -244,6 +262,29 @@ def penjualan(request):
         'jumlah_notifikasi':jumlah_notifikasi
     }
     return render(request, 'penjualan/penjualan.html', context)
+
+def export_pdf_penjualan(request):
+    # Ambil data penjualan dari database atau sumber lainnya
+    daftar_penjualan = Penjualan.objects.all().order_by('-total_terjual')
+    context = {
+        'daftar_penjualan': daftar_penjualan
+    }
+
+    # Render template
+    template = get_template('penjualan/penjualanPDF.html')
+    rendered_template = template.render(context)
+
+    # Buat objek HttpResponse dengan tipe konten application/pdf
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="data_penjualan.pdf"'
+
+    # Buat PDF menggunakan HTML yang dirender
+    pisa_status = pisa.CreatePDF(rendered_template, dest=response)
+
+    # Jika pembuatan PDF gagal, kirimkan tanggapan error
+    if pisa_status.err:
+        return HttpResponse('Error generating PDF')
+    return response
 
 def save(self, *args, **kwargs):
         self.hargajual = self.idproduk.hargaproduct
@@ -259,43 +300,105 @@ def transaksi(request):
     return render(request, 'transaksi/tambah-transaksi.html', context)
         
 def postpembayaran(request):
-    idpembayaran = request.POST['idpembayaran']
     nama = request.POST['nama']
     alamat = request.POST['alamat']
     totalpembayaran = request.POST['totalpembayaran']
     metodepembayaran = request.POST['metodepembayaran']
-    
-    if Transaksi.objects.filter(idpembayaran=idpembayaran).exists():
-        messages.error(request, 'id pembayaran sudah ada')
-        return redirect('/transaksi')
-    else:
-        transaksi_pembayaran = Transaksi(
-            idpembayaran = idpembayaran,
-            nama = nama,
-            alamat = alamat,
-            tglpembayaran = datetime.date.today(),
-            totalpembayaran = totalpembayaran,
-            metodepembayaran = metodepembayaran,
-        )
-        # update pemesanan
-        pemesanan = Pemesanan.objects.filter(statuspembayaran='B')
-        for i in range(len(pemesanan)):
-            pemesanan[i].statuspembayaran = 'S'
-            pemesanan[i].save()
-        transaksi_pembayaran.save()
-        messages.success(request, 'pembayaran berhasil')
+   
+    transaksi_pembayaran = Transaksi(
+        idpembayaran = generate_random_id(),
+        nama = nama,
+        alamat = alamat,
+        tglpembayaran = datetime.date.today(),
+        totalpembayaran = totalpembayaran,
+        metodepembayaran = metodepembayaran
+    )
+    # update pemesanan
+    pemesanan = Pemesanan.objects.filter(statuspembayaran='B')
+    for i in range(len(pemesanan)):
+        pemesanan[i].statuspembayaran = 'S'
+        pemesanan[i].save()
+    transaksi_pembayaran.save()
+    messages.success(request, 'pembayaran berhasil')
     return redirect("/pembayaran")
 
 def pembayaran(request):
-    view_transaksi = Transaksi.objects.all().order_by('-idpembayaran')
+    view_transaksi = Transaksi.objects.all().filter(is_downloaded=False)
     context = {
         'view_transaksi': view_transaksi
     }
-    return render(request, 'transaksi/data-transaksi.html', context)
+    return render(request, 'transaksi/struk-pembayaran.html', context)
 
+def export_pdf_transaksi(request):
+    # Ambil data pembayaran dari database atau sumber lainnya
+    view_transaksi = Transaksi.objects.all().filter(is_downloaded=False)
+    context = {
+        'view_transaksi': view_transaksi
+    }
+
+    # Render template
+    template = get_template('transaksi/transaksiPDF.html')
+    rendered_template = template.render(context)
+
+    # Buat objek HttpResponse dengan tipe konten application/pdf
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="struk_pembayaran.pdf"'
+        
+    # Buat PDF menggunakan HTML yang dirender
+    pisa_status = pisa.CreatePDF(rendered_template, dest=response)
+
+    # Jika pembuatan PDF gagal, kirimkan tanggapan error
+    if pisa_status.err:
+        return HttpResponse('Error generating PDF')
+    
+    # Setel atribut downloaded menjadi True untuk data yang telah diunduh
+    view_transaksi.update(is_downloaded=True)
+    return response
+    
 def notifikasi_terbaca(request,idnotifikasi):
     notifikasi = Notifikasi.objects.get(idnotifikasi=idnotifikasi)
     notifikasi.statusnotifikasi = 'S'
     notifikasi.save()
     messages.success(request, 'Notifikasi Telah Terbaca')
     return redirect(request.META.get('HTTP_REFERER'))
+
+def tandai_semua_terbaca(request):
+    notifikasi = Notifikasi.objects.all()
+    for notif in notifikasi:
+        notif.statusnotifikasi = 'S'
+        notif.save()
+    messages.success(request, 'Semua notifikasi telah terbaca')
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+def datacustomer(request):
+    view_customer = Transaksi.objects.all().order_by('tglpembayaran')
+    pesanan = Pemesanan.objects.all()
+    context = {
+        'view_customer': view_customer,
+        'pesanan' : pesanan
+    }
+    return render(request, 'penjualan/customer.html', context)
+
+def export_pdf_customer(request):
+    # Ambil data pembayaran dari database atau sumber lainnya
+    view_customer = Transaksi.objects.all().order_by('tglpembayaran')
+    context = {
+        'view_customer': view_customer
+    }
+
+    # Render template
+    template = get_template('penjualan/customerPDF.html')
+    rendered_template = template.render(context)
+
+    # Buat objek HttpResponse dengan tipe konten application/pdf
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="data_customer.pdf"'
+
+    # Buat PDF menggunakan HTML yang dirender
+    pisa_status = pisa.CreatePDF(rendered_template, dest=response)
+
+    # Jika pembuatan PDF gagal, kirimkan tanggapan error
+    if pisa_status.err:
+        return HttpResponse('Error generating PDF')
+    return response
